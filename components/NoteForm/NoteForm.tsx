@@ -100,7 +100,7 @@ function NoteForm() {
                     type="submit"
                     className={css.submitButton}
                     disabled={false}
-                    onClick={handleSubmit}
+                    onSubmit={handleSubmit}
                 >
                     Create note
                 </button>
