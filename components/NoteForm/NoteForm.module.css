@@ -65,7 +65,14 @@
 }
 
 .error {
+    display: none;
     color: #dc3545;
     font-size: 12px;
     margin-top: 4px;
+}
+
+.input,
+.textarea,
+.select:invalid + .error {
+    display: inline;
 }

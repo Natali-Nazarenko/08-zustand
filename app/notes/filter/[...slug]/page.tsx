@@ -1,10 +1,33 @@
-import { fetchNotes } from '@/lib/api';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+
 import NotesClient from './Notes.client';
+import { fetchNotes } from '@/lib/api';
 
 type NotesByTagProps = {
     params: Promise<{ slug: string[] }>;
 };
+
+export async function generateMetadata({ params }: NotesByTagProps): Promise<Metadata> {
+    const { slug } = await params;
+    return {
+        title: `"${slug[0]}" notes - NoteHub`,
+        description: `You choose '${slug[0]}' notes`,
+        openGraph: {
+            url: `http://localhost:3000/notes/${slug[0]}`,
+            title: `"${slug[0]}" notes - NoteHub`,
+            description: `You choose '${slug[0]}' notes`,
+            images: [
+                {
+                    url: 'https://ethnomir.ru/upload/medialibrary/77b/kolibri.jpg',
+                    width: 1200,
+                    height: 630,
+                    alt: `"${slug[0]}" notes - NoteHub`,
+                },
+            ],
+        },
+    };
+}
 
 async function NotesByTag({ params }: NotesByTagProps) {
     const { slug } = await params;
