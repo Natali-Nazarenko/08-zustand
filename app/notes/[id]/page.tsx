@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: NoteProps): Promise<Metadata>
         title: response.title,
         description: response.content,
         openGraph: {
-            url: `http://localhost:3000/notes/${response.id}`,
+            url: `https://08-zustand-pearl-eight.vercel.app/notes/${response.id}`,
             title: response.title,
             description: response.content,
             images: [

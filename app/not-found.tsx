@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: '404 - page not found',
     description: 'The page you are looking for does not exist.',
     openGraph: {
-        url: `http://localhost:3000/`,
+        url: `https://08-zustand-pearl-eight.vercel.app/`,
         title: '404 - page not found',
         description: 'THE PAGE YOU REQUESTED COULD NOT BE FOUND',
         images: [

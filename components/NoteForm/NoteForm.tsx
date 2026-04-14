@@ -47,7 +47,7 @@ function NoteForm() {
     };
 
     return (
-        <form action={handleSubmit} className={css.form}>
+        <form className={css.form}>
             <div className={css.formGroup}>
                 <label htmlFor={`${fieldId}-title`}>Title</label>
                 <input
@@ -55,7 +55,7 @@ function NoteForm() {
                     type="text"
                     name="title"
                     className={css.input}
-                    defaultValue={draft?.title}
+                    value={draft?.title}
                     onChange={handleChange}
                     required
                 />
@@ -68,7 +68,7 @@ function NoteForm() {
                     name="content"
                     rows={8}
                     className={css.textarea}
-                    defaultValue={draft?.content}
+                    value={draft?.content}
                     onChange={handleChange}
                     required
                 />
@@ -96,7 +96,12 @@ function NoteForm() {
                 <button type="button" className={css.cancelButton} onClick={close}>
                     Cancel
                 </button>
-                <button type="submit" className={css.submitButton} disabled={false}>
+                <button
+                    type="submit"
+                    className={css.submitButton}
+                    disabled={false}
+                    onClick={handleSubmit}
+                >
                     Create note
                 </button>
             </div>

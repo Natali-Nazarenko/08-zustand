@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: NotesByTagProps): Promise<Met
         title: `"${slug[0]}" notes - NoteHub`,
         description: `You choose '${slug[0]}' notes`,
         openGraph: {
-            url: `http://localhost:3000/notes/${slug[0]}`,
+            url: `https://08-zustand-pearl-eight.vercel.app/notes/${slug[0]}`,
             title: `"${slug[0]}" notes - NoteHub`,
             description: `You choose '${slug[0]}' notes`,
             images: [
