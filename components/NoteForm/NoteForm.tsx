@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useId } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { useNoteStore } from '@/lib/store/noteStore';
 import { createNote } from '@/lib/api';
@@ -13,26 +14,26 @@ interface NoteFormValues {
     tag: string;
 }
 
-interface NoteFormProps {
-    onClose: () => void;
-}
-
-function NoteForm({ onClose }: NoteFormProps) {
+function NoteForm() {
     const fieldId = useId();
     const queryClient = useQueryClient();
+
+    const router = useRouter();
+    const close = () => router.back();
 
     const { draft, setDraft, clearDraft } = useNoteStore();
 
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
     ) => {
-        setDraft({ ...draft, [event.target.name]: event.target.value });
+        const { name, value } = event.target;
+        setDraft({ ...draft, [name]: value });
     };
 
     const { mutate } = useMutation({
         mutationFn: createNote,
         onSuccess: () => {
-            onClose();
+            close();
             clearDraft();
             queryClient.invalidateQueries({ queryKey: ['notes'] });
         },
@@ -92,7 +93,7 @@ function NoteForm({ onClose }: NoteFormProps) {
             </div>
 
             <div className={css.actions}>
-                <button type="button" className={css.cancelButton} onClick={onClose}>
+                <button type="button" className={css.cancelButton} onClick={close}>
                     Cancel
                 </button>
                 <button type="submit" className={css.submitButton} disabled={false}>
