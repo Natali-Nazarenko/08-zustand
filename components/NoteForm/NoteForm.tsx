@@ -9,7 +9,7 @@ import css from './NoteForm.module.css';
 interface NoteFormValues {
     title: string;
     content: string;
-    tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+    tag: string;
 }
 
 interface NoteFormProps {
@@ -33,6 +33,12 @@ function NoteForm({ onClose }: NoteFormProps) {
     });
 
     const handleSubmit = (formData: FormData) => {
+        const values: NoteFormValues = {
+            title: formData.get('title') as string,
+            content: formData.get('content') as string,
+            tag: formData.get('tag') as string,
+        };
+
         mutate(values);
     };
 
@@ -47,7 +53,7 @@ function NoteForm({ onClose }: NoteFormProps) {
                     className={css.input}
                     required
                 />
-                <span className={css.error}>Це поле обов'язкове!</span>
+                {/* <span className={css.error}>Це поле обов'язкове!</span> */}
             </div>
 
             <div className={css.formGroup}>
@@ -59,7 +65,7 @@ function NoteForm({ onClose }: NoteFormProps) {
                     className={css.textarea}
                     required
                 />
-                <span className={css.error}>Це поле обов'язкове!</span>
+                {/* <span className={css.error}>Це поле обов'язкове!</span> */}
             </div>
 
             <div className={css.formGroup}>
@@ -71,7 +77,7 @@ function NoteForm({ onClose }: NoteFormProps) {
                     <option value="Meeting">Meeting</option>
                     <option value="Shopping">Shopping</option>
                 </select>
-                <span className={css.error}>Це поле обов'язкове!</span>
+                {/* <span className={css.error}>Це поле обов'язкове!</span> */}
             </div>
 
             <div className={css.actions}>
