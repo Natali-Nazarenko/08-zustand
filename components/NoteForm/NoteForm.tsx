@@ -8,12 +8,6 @@ import { useNoteStore } from '@/lib/store/noteStore';
 import { createNote } from '@/lib/api';
 import css from './NoteForm.module.css';
 
-interface NoteFormValues {
-    title: string;
-    content: string;
-    tag: string;
-}
-
 function NoteForm() {
     const fieldId = useId();
     const queryClient = useQueryClient();
@@ -42,12 +36,13 @@ function NoteForm() {
         },
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+        event.preventDefault();
         mutate(draft);
     };
 
     return (
-        <form className={css.form}>
+        <form className={css.form} onSubmit={handleSubmit}>
             <div className={css.formGroup}>
                 <label htmlFor={`${fieldId}-title`}>Title</label>
                 <input
@@ -96,12 +91,7 @@ function NoteForm() {
                 <button type="button" className={css.cancelButton} onClick={close}>
                     Cancel
                 </button>
-                <button
-                    type="submit"
-                    className={css.submitButton}
-                    disabled={false}
-                    onSubmit={handleSubmit}
-                >
+                <button type="submit" className={css.submitButton} disabled={false}>
                     Create note
                 </button>
             </div>
