@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useId } from 'react';
 
+import { useNoteStore } from '@/lib/store/noteStore';
 import { createNote } from '@/lib/api';
 import css from './NoteForm.module.css';
 
@@ -18,13 +19,21 @@ interface NoteFormProps {
 
 function NoteForm({ onClose }: NoteFormProps) {
     const fieldId = useId();
-
     const queryClient = useQueryClient();
+
+    const { draft, setDraft, clearDraft } = useNoteStore();
+
+    const handleChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    ) => {
+        setDraft({ ...draft, [event.target.name]: event.target.value });
+    };
 
     const { mutate } = useMutation({
         mutationFn: createNote,
         onSuccess: () => {
             onClose();
+            clearDraft();
             queryClient.invalidateQueries({ queryKey: ['notes'] });
         },
         onError: error => {
@@ -32,14 +41,8 @@ function NoteForm({ onClose }: NoteFormProps) {
         },
     });
 
-    const handleSubmit = (formData: FormData) => {
-        const values: NoteFormValues = {
-            title: formData.get('title') as string,
-            content: formData.get('content') as string,
-            tag: formData.get('tag') as string,
-        };
-
-        mutate(values);
+    const handleSubmit = () => {
+        mutate(draft);
     };
 
     return (
@@ -51,9 +54,10 @@ function NoteForm({ onClose }: NoteFormProps) {
                     type="text"
                     name="title"
                     className={css.input}
+                    defaultValue={draft?.title}
+                    onChange={handleChange}
                     required
                 />
-                {/* <span className={css.error}>Це поле обов'язкове!</span> */}
             </div>
 
             <div className={css.formGroup}>
@@ -63,21 +67,28 @@ function NoteForm({ onClose }: NoteFormProps) {
                     name="content"
                     rows={8}
                     className={css.textarea}
+                    defaultValue={draft?.content}
+                    onChange={handleChange}
                     required
                 />
-                {/* <span className={css.error}>Це поле обов'язкове!</span> */}
             </div>
 
             <div className={css.formGroup}>
                 <label htmlFor="tag">Tag</label>
-                <select id="tag" name="tag" className={css.select} required>
+                <select
+                    id="tag"
+                    name="tag"
+                    className={css.select}
+                    required
+                    value={draft?.tag}
+                    onChange={handleChange}
+                >
                     <option value="Todo">Todo</option>
                     <option value="Work">Work</option>
                     <option value="Personal">Personal</option>
                     <option value="Meeting">Meeting</option>
                     <option value="Shopping">Shopping</option>
                 </select>
-                {/* <span className={css.error}>Це поле обов'язкове!</span> */}
             </div>
 
             <div className={css.actions}>
